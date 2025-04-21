@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UsersModule } from './auth/users.module';
+import { PlayersModule } from './players/players.module';
+import { WinnersModule } from './winners/winners.module';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
-    UsersModule,
+    PlayersModule,
+    WinnersModule,
+    SharedModule,
     ConfigModule.forRoot({
       envFilePath: [`.env.stage.${process.env.STAGE}`],
     }),
@@ -17,7 +19,7 @@ import { UsersModule } from './auth/users.module';
       useFactory: async (configService: ConfigService) => ({
         type: 'postgres',
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: false,
         host: configService.get('DB_HOST'),
         port: configService.get('DB_PORT'),
         username: configService.get('DB_USERNAME'),
@@ -26,7 +28,5 @@ import { UsersModule } from './auth/users.module';
       }),
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
