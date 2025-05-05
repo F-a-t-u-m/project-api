@@ -7,6 +7,15 @@ async function bootstrap() {
   const logger = new Logger('Main', { timestamp: true });
   const app = await NestFactory.create(AppModule);
 
+  app.setGlobalPrefix('api');
+
+  app.enableCors({
+    origin: 'http://localhost:4200',
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  });
+
   const options = new DocumentBuilder()
     .setTitle('Game API')
     .setDescription('API для гри')

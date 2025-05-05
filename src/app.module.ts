@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PlayersModule } from './players/players.module';
 import { WinnersModule } from './winners/winners.module';
 import { SharedModule } from './shared/shared.module';
+import { SeederService } from './shared/services/seeder.service';
 
 @Module({
   imports: [
@@ -28,5 +29,6 @@ import { SharedModule } from './shared/shared.module';
       }),
     }),
   ],
+  providers: [SeederService],
 })
 export class AppModule {}

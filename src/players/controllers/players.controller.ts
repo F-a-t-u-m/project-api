@@ -1,7 +1,7 @@
-import { Controller, Post, Body, Patch, Get } from '@nestjs/common';
+import { Controller, Post, Body, Patch, Get, Query } from '@nestjs/common';
 import { PlayersService } from '../services/players.service';
 import { Web3AddressValidationPipe } from 'src/shared/pipes/web3-address-validation.pipe';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateScoreDto } from '../DTOs/update-score.dto';
 import { IncrementTransactionDto } from '../DTOs/increment-transactions.dto';
 import { CreateOrUpdatePlayerDto } from '../DTOs/create-or-update-player.dto';
@@ -14,7 +14,7 @@ export class PlayersController {
 
   @Post()
   @ApiOperation({ summary: 'Create or update player' })
-  @ApiBody({ description: 'Player address', type: CreateOrUpdatePlayerDto  })
+  @ApiBody({ description: 'Player address', type: CreateOrUpdatePlayerDto })
   @ApiResponse({ status: 201, description: 'Player created or updated.' })
   @ApiResponse({ status: 400, description: 'Invalid Web3 address.' })
   createOrUpdate(@Body('address', Web3AddressValidationPipe) address: string) {
@@ -42,5 +42,14 @@ export class PlayersController {
   @ApiResponse({ status: 200, description: 'List of players', type: [PlayerDto] })
   getAll() {
     return this.playersService.findAll();
+  }
+
+  @Get('address')
+  @ApiOperation({ summary: 'Get player by address' })
+  @ApiQuery({ name: 'address', description: 'Player wallet address', required: true })
+  @ApiResponse({ status: 200, description: 'Player data', type: PlayerDto })
+  @ApiResponse({ status: 400, description: 'Invalid Web3 address.' })
+  getByAddress(@Query('address', Web3AddressValidationPipe) address: string) {
+    return this.playersService.getPlayerByAddress(address);
   }
 }

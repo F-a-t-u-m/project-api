@@ -8,6 +8,6 @@ import { WinnersService } from './services/winners.service';
   imports: [TypeOrmModule.forFeature([Winner])],
   controllers: [WinnersController],
   providers: [WinnersService],
-  exports: [WinnersService],
+  exports: [WinnersService, TypeOrmModule],
 })
 export class WinnersModule {}

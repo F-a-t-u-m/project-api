@@ -44,6 +44,10 @@ export class PlayersService {
       .getOne();
   }
 
+  async getPlayerByAddress(address: string): Promise<Player | null> {
+    return this.playerRepository.findOne({ where: { address } });
+  }
+
   async findAll(): Promise<Player[]> {
     return this.playerRepository.find();
   }
